@@ -52,7 +52,7 @@ namespace Extract
             this.textBox.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox.Location = new System.Drawing.Point(99, 12);
             this.textBox.Name = "textBox";
-            this.textBox.PasswordChar = '#';
+            this.textBox.PasswordChar = '●';
             this.textBox.Size = new System.Drawing.Size(299, 23);
             this.textBox.TabIndex = 1;
             this.textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_KeyDown);

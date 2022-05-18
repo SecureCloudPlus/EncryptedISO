@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Extract
 {
     public partial class ExtractForm : Form
     {
+
         public ExtractForm()
         {
             InitializeComponent();
-            //string s = Decryption.DecipherString("uif bzodl ctufx jpm thabzr jzhg pkb ebab ykl", "password");
-            //MessageBox.Show(s);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -30,9 +30,12 @@ namespace Extract
             DialogResult dlgRes = folderDlg.ShowDialog();
             if (dlgRes == DialogResult.OK)
             {
+                statusLabel.Text = "Working... please wait";
+                this.Refresh();
                 string source_path = Directory.GetCurrentDirectory();
                 string dest_path = folderDlg.SelectedPath + "\\";
                 string pwd = textBox.Text;
+
                 int result = ExtractISO.ExtractDirectory(source_path, dest_path, pwd);
                 if (result == -1)
                 {
@@ -52,7 +55,6 @@ namespace Extract
                 };
                 Process.Start(startInfo);
             }
-            this.Close();
         }
 
         private void textBox_KeyDown(object sender, KeyEventArgs e)

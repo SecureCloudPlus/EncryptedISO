@@ -25,16 +25,16 @@ public class Decryption
     /// </summary>
     /// <param name="tmpKey"></param>
     /// <returns></returns>
-    private static string IncreaseVigenereCipherKeyEntropy(string tmpPass)
+    private static string IncreaseVigenereCipherKeyEntropy(string tmpKey)
     {
         try
         {
             StringBuilder outKey = new StringBuilder();
             string alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             int ctr = 0;
-            foreach (char c in tmpPass)
+            foreach (char c in tmpKey)
             {
-                string v = c.ToString(); ;
+                string v = c.ToString();
                 if (!(c >= 'A' && c <= 'Z'))
                 {
                     int i = (int)Char.GetNumericValue(c) + ctr;
@@ -86,7 +86,10 @@ public class Decryption
             }
             return true;
         }
-        catch { return false; }
+        catch(Exception e) 
+        { 
+            return false; 
+        }
     }
 
     /// <summary>
@@ -111,7 +114,8 @@ public class Decryption
                 char offset = cIsUpper ? 'A' : 'a';
                 int keyIndex = (i - nonAlphaCharCount) % key.Length;
                 int k = (cIsUpper ? char.ToUpper(key[keyIndex]) : char.ToLower(key[keyIndex])) - offset;
-                char ch = (char)(Mod(input[i] + (encipher ? k : -k) - offset, 26) + offset);
+                k = encipher ? k : -k;
+                char ch = (char)(Mod(input[i] + k - offset, 26) + offset);
                 output += ch;
             }
             else

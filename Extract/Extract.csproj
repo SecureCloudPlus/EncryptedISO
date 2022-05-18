@@ -43,7 +43,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -104,7 +104,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Decryption.cs" />
     <Compile Include="ExtractISO.cs" />
     <Compile Include="ExtractForm.cs">
       <SubType>Form</SubType>
@@ -112,6 +111,7 @@
     <Compile Include="ExtractForm.Designer.cs">
       <DependentUpon>ExtractForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="HugeMemoryStream.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ExtractForm.resx">

@@ -28,19 +28,34 @@ internal class BuildISO
             foreach (string file in filesToBeEncrypted)
             {
                 FileInfo inFile = new FileInfo(file);
+                string tempFile = @"d:\test\" + EncodeString(inFile.Name, password) + ".enc";
                 using (FileStream inFs = inFile.OpenRead())
                 {
 
-                    HugeMemoryStream outMs = new HugeMemoryStream();
-
-                    if (EncryptStream(inFs, outMs, password))
+                    FileInfo outFile = new FileInfo(tempFile);
+                    using (FileStream outFs = outFile.OpenWrite())
                     {
-                        builder.AddFile(EncodeString(inFile.Name, password) + ".enc", outMs);
-                        builder.Build(saveISOPath);
-                        cnt++;
+                        if (EncryptStream(inFs, outFs, password))
+                        {
+                            outFs.Close();
+                            builder.AddFile(Path.GetFileName(tempFile), tempFile);
+                            builder.Build(saveISOPath);
+                            cnt++;
+                        }
                     }
-
                 }
+
+                /**
+                                        HugeMemoryStream outMs = new HugeMemoryStream();
+                                        if (EncryptStream(inFs, outMs, password))
+                                        {
+                                            builder.AddFile(EncodeString(inFile.Name, password) + ".enc", outMs);
+                                            builder.Build(saveISOPath);
+                                            cnt++;
+                                        }
+
+                **/
+
             }
             foreach (string file in filesNOTToBeEncrypted)
             {
@@ -142,7 +157,8 @@ internal class BuildISO
                 char offset = cIsUpper ? 'A' : 'a';
                 int keyIndex = (i - nonAlphaCharCount) % key.Length;
                 int k = (cIsUpper ? char.ToUpper(key[keyIndex]) : char.ToLower(key[keyIndex])) - offset;
-                char ch = (char)(Mod(input[i] + (encipher ? k : -k) - offset, 26) + offset);
+                k = encipher ? k : -k;
+                char ch = (char)(Mod(input[i] + k - offset, 26) + offset);
                 output += ch;
             }
             else
