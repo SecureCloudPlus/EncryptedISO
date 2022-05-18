@@ -30,7 +30,8 @@ internal class BuildISO
                 FileInfo inFile = new FileInfo(file);
                 using (FileStream inFs = inFile.OpenRead())
                 {
-                    MemoryStream outMs = new MemoryStream();
+
+                    HugeMemoryStream outMs = new HugeMemoryStream();
 
                     if (EncryptStream(inFs, outMs, password))
                     {
@@ -38,6 +39,7 @@ internal class BuildISO
                         builder.Build(saveISOPath);
                         cnt++;
                     }
+
                 }
             }
             foreach (string file in filesNOTToBeEncrypted)
@@ -52,8 +54,9 @@ internal class BuildISO
             }
             return cnt;
         }
-        catch
+        catch (Exception e)
         {
+            Console.WriteLine(e.Message);
             return -1;
         }
     }
@@ -184,6 +187,10 @@ internal class BuildISO
             }
             return true;
         }
-        catch { return false; }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return false;
+        }
     }
 }

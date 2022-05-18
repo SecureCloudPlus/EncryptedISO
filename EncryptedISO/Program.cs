@@ -9,7 +9,7 @@ namespace EncryptedISO
             string s = BuildISO.EncodeString("the quick brown fox jumped over the lazy dog","password");
 
 
-            string[] filesToBeEncrypted = new string[] { @"D:\test\TheGlobeReciept.pdf", @"D:\test\Bulldog Commission Guide 500084v2_2.pdf" };
+            string[] filesToBeEncrypted = new string[] { @"D:\test\TheGlobeReciept.pdf", @"D:\ParadoxSE.iso" };
             string[] filesNOTToBeEncrypted = new string[] { @"D:\test\Extract.exe" };
             string saveISOPath = @"D:\test\data.iso";
             string password = "password";
