@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptedISO", "EncryptedISO\EncryptedISO.csproj", "{4499D2E4-B04E-43F6-96C3-372BA54FA15A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncryptedISO", "EncryptedISO\EncryptedISO.csproj", "{4499D2E4-B04E-43F6-96C3-372BA54FA15A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extract", "Extract\Extract.csproj", "{FBC82F67-960E-45F2-A3B5-5232984B416E}"
 EndProject
