@@ -4,8 +4,18 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 
-internal class ExtractISO
+ class ExtractISO
 {
+    private int progress = -1;
+    public int Progress
+    {
+        get
+        {
+            return this.progress;
+        }
+    }
+
+
     //static ToolStripProgressBar progress;
 
     /// <summary>
@@ -15,9 +25,9 @@ internal class ExtractISO
     /// <param name="targetFolder"></param>
     /// <param name="password"></param>
     /// <returns></returns>
-    public static int ExtractDirectory(string sourceFolder, string targetFolder, string password)
+    public int ExtractDirectory(string sourceFolder, string targetFolder, string password)
     {
-        int cnt = 0;
+        progress = 1;
         try
         {
             DirectoryInfo dinfo = new DirectoryInfo(sourceFolder);
@@ -35,7 +45,7 @@ internal class ExtractISO
                             if (DecryptStream(FileStr, outMs, password))
                             {
                                 outMs.CopyTo(Fs);
-                                cnt++;
+                                progress++;
                                 success = true;
                             }
                         }
@@ -44,11 +54,12 @@ internal class ExtractISO
                     }
                 }
             }
-            return cnt;
+            return progress;
         }
         catch (Exception e)
         {
-            return -1;
+            progress = -1;
+            return progress;
         }
     }
 
@@ -59,7 +70,7 @@ internal class ExtractISO
     /// <param name="plainText"></param>
     /// <param name="passPhrase"></param>
     /// <returns></returns>
-    public static string DecipherString(string cipherText, string passPhrase)
+    public string DecipherString(string cipherText, string passPhrase)
     {
         SHA512 sha512Hash = SHA512.Create();
         byte[] keySourceHash = sha512Hash.ComputeHash(ASCIIEncoding.ASCII.GetBytes(passPhrase));
@@ -72,7 +83,7 @@ internal class ExtractISO
     /// </summary>
     /// <param name="tmpKey"></param>
     /// <returns></returns>
-    private static string IncreaseVigenereCipherKeyEntropy(string tmpKey)
+    private string IncreaseVigenereCipherKeyEntropy(string tmpKey)
     {
         try
         {
@@ -108,7 +119,7 @@ internal class ExtractISO
     /// <param name="password"></param>
     /// <param name="salt"></param>
     /// <returns></returns>
-    public static bool DecryptStream(Stream inStream, Stream OutStream, string password, string salt = null)
+    public bool DecryptStream(Stream inStream, Stream OutStream, string password, string salt = null)
     {
         try
         {
@@ -146,7 +157,7 @@ internal class ExtractISO
     /// <param name="key"></param>
     /// <param name="encipher"></param>
     /// <returns></returns>
-    private static string VigenereCipher(string input, string key, bool encipher)
+    private string VigenereCipher(string input, string key, bool encipher)
     {
         for (int i = 0; i < key.Length; ++i)
             if (!char.IsLetter(key[i]))
@@ -180,7 +191,7 @@ internal class ExtractISO
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <returns></returns>
-    private static int Mod(int a, int b)
+    private int Mod(int a, int b)
     {
         return (a % b + b) % b;
     }

@@ -13,9 +13,10 @@ internal class BuildISO
     /// <param name="filesToBeEncrypted"></param>
     /// <param name="filesNOTToBeEncrypted"></param>
     /// <param name="saveISOPath"></param>
+    /// <param name="tempPath"></param>
     /// <param name="password"></param>
     /// <returns></returns>
-    public static int Build(string[] filesToBeEncrypted, string[] filesNOTToBeEncrypted, string saveISOPath, string password)
+    public static int Build(string[] filesToBeEncrypted, string[] filesNOTToBeEncrypted, string saveISOPath, string tempPath, string password)
     {
         int cnt = 0;
         try
@@ -28,7 +29,7 @@ internal class BuildISO
             foreach (string file in filesToBeEncrypted)
             {
                 FileInfo inFile = new FileInfo(file);
-                string tempFile = @"d:\test\" + EncodeString(inFile.Name, password) + ".enc";
+                string tempFile = tempPath + EncodeString(inFile.Name, password) + ".enc";
                 using (FileStream inFs = inFile.OpenRead())
                 {
 
@@ -44,18 +45,6 @@ internal class BuildISO
                         }
                     }
                 }
-
-                /**
-                                        HugeMemoryStream outMs = new HugeMemoryStream();
-                                        if (EncryptStream(inFs, outMs, password))
-                                        {
-                                            builder.AddFile(EncodeString(inFile.Name, password) + ".enc", outMs);
-                                            builder.Build(saveISOPath);
-                                            cnt++;
-                                        }
-
-                **/
-
             }
             foreach (string file in filesNOTToBeEncrypted)
             {
