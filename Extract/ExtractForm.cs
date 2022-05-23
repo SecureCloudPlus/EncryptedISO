@@ -70,7 +70,7 @@ namespace Extract
                     return;
                 }
                 statusLabel.Text = "Successfully extracted " + result + " files.";
-                updateProgressBar(cnt);
+                updateProgressBar(cnt + 1);
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     Arguments = folderDlg.SelectedPath + "\\",

@@ -143,6 +143,7 @@ using System.Windows.Forms;
         }
         catch (Exception e)
         {
+            MessageBox.Show(e.Message);
             return false;
         }
     }
