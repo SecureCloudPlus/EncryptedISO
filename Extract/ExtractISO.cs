@@ -15,9 +15,6 @@ using System.Windows.Forms;
         }
     }
 
-
-    //static ToolStripProgressBar progress;
-
     /// <summary>
     /// Decrypts (using the password) files with the .enc extension from the given source Folder and saves them to the target Folder 
     /// </summary>
