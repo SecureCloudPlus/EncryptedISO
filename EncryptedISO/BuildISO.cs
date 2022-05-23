@@ -30,10 +30,9 @@ internal class BuildISO
             {
                 FileInfo inFile = new FileInfo(file);
                 string tempFile = tempPath + EncodeString(inFile.Name, password) + ".enc";
+                FileInfo outFile = new FileInfo(tempFile);
                 using (FileStream inFs = inFile.OpenRead())
                 {
-
-                    FileInfo outFile = new FileInfo(tempFile);
                     using (FileStream outFs = outFile.OpenWrite())
                     {
                         if (EncryptStream(inFs, outFs, password))

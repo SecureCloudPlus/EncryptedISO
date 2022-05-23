@@ -93,6 +93,7 @@ namespace Extract
             this.label2.TabIndex = 4;
             this.label2.Text = "Show Password";
             this.label2.Click += new System.EventHandler(this.label2_Click);
+            this.label2.MouseLeave += new System.EventHandler(this.label2_MouseLeave);
             // 
             // progressBar
             // 

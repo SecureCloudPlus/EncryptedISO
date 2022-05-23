@@ -97,10 +97,16 @@ namespace Extract
 
         private void label2_Click(object sender, EventArgs e)
         {
-            if (textBox.PasswordChar == '●')
-                textBox.PasswordChar = '\x0000';
-            else
-                textBox.PasswordChar = '●';
+            if (textBox.Text.Length > 0)
+                if (textBox.PasswordChar == '●')
+                    textBox.PasswordChar = '\x0000';
+                else
+                    textBox.PasswordChar = '●';
+        }
+
+        private void label2_MouseLeave(object sender, EventArgs e)
+        {
+            textBox.PasswordChar = '●';
         }
     }
 }
