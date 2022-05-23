@@ -55,7 +55,8 @@ namespace Extract
                     if (extractISO.Progress > cnt)
                     {
                         cnt = extractISO.Progress;
-                        updateProgressBar(cnt);
+                        if (cnt <= progressBar.Maximum)
+                            updateProgressBar(cnt);
                     }
                     Application.DoEvents();
                 }
