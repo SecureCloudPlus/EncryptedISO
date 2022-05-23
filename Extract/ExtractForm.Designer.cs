@@ -72,8 +72,6 @@ namespace Extract
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 94);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(255, 22);
