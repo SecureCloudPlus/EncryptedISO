@@ -111,7 +111,6 @@
     <Compile Include="ExtractForm.Designer.cs">
       <DependentUpon>ExtractForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="HugeMemoryStream.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ExtractForm.resx">

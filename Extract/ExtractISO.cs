@@ -31,27 +31,24 @@ using System.Windows.Forms;
         try
         {
             DirectoryInfo dinfo = new DirectoryInfo(sourceFolder);
-            foreach (FileInfo finfo in dinfo.GetFiles(@"*.enc"))
+            foreach (FileInfo inFile in dinfo.GetFiles(@"*.enc"))
             {
-                using (HugeMemoryStream outMs = new HugeMemoryStream())
+                using (FileStream inFs = inFile.OpenRead())
                 {
-                    using (Stream FileStr = finfo.OpenRead())
+                    string encFileName = Path.ChangeExtension(inFile.Name, null);
+                    string fileName = DecipherString(encFileName, password);
+                    bool success = false;
+                    using (FileStream outFs = File.Create(targetFolder + "\\" + fileName))
                     {
-                        string encFileName = Path.ChangeExtension(finfo.Name, null);
-                        string fileName = DecipherString(encFileName, password);
-                        bool success = false;
-                        using (FileStream Fs = File.Create(targetFolder + "\\" + fileName))
+                        if (DecryptStream(inFs, outFs, password))
                         {
-                            if (DecryptStream(FileStr, outMs, password))
-                            {
-                                outMs.CopyTo(Fs);
-                                progress++;
-                                success = true;
-                            }
+                            inFs.CopyTo(outFs);
+                            progress++;
+                            success = true;
                         }
-                        if (!success)
-                            File.Delete(targetFolder + "\\" + fileName);
                     }
+                    if (!success)
+                        File.Delete(targetFolder + "\\" + fileName);
                 }
             }
             return progress;
