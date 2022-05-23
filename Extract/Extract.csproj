@@ -184,8 +184,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="lock.ico" />
-    <None Include="Resources\ezgif-2-a094bda882.gif" />
-    <None Include="Resources\ezgif-2-d0d6867bdb.gif" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

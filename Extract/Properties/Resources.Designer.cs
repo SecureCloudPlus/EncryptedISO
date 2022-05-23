@@ -59,25 +59,5 @@ namespace Extract.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ezgif_2_a094bda882 {
-            get {
-                object obj = ResourceManager.GetObject("ezgif-2-a094bda882", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap ezgif_2_d0d6867bdb {
-            get {
-                object obj = ResourceManager.GetObject("ezgif-2-d0d6867bdb", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }
