@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 
- class ExtractISO
+class ExtractISO
 {
     private int progress = -1;
     public int Progress

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Extract.Properties;
+using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -9,12 +11,14 @@ namespace Extract
     public partial class ExtractForm : Form
     {
         private ExtractISO extractISO = new ExtractISO();
+
         public ExtractForm()
         {
             InitializeComponent();
             progressBar.Value = 0;
             progressBar.Minimum = 0;
         }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -32,6 +36,8 @@ namespace Extract
             DialogResult dlgRes = folderDlg.ShowDialog();
             if (dlgRes == DialogResult.OK)
             {
+
+
                 DirectoryInfo dinfo = new DirectoryInfo(Directory.GetCurrentDirectory());
                 progressBar.Maximum = dinfo.GetFiles(@"*.enc").Length + 1;
                 statusLabel.Text = "Working... please wait";
@@ -44,7 +50,7 @@ namespace Extract
                 var thread = new Thread(() => result = extractISO.ExtractDirectory(source_path, dest_path, pwd));
                 thread.Start();
                 int cnt = -1;
-                while (thread.IsAlive) 
+                while (thread.IsAlive)
                 {
                     if (extractISO.Progress > cnt)
                     {
@@ -70,7 +76,7 @@ namespace Extract
                     return;
                 }
                 statusLabel.Text = "Successfully extracted " + result + " files.";
-                updateProgressBar(cnt + 1);
+                updateProgressBar(progressBar.Maximum);
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
                     Arguments = folderDlg.SelectedPath + "\\",
