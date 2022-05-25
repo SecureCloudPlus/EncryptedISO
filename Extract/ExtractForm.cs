@@ -11,6 +11,7 @@ namespace Extract
     public partial class ExtractForm : Form
     {
         private ExtractISO extractISO = new ExtractISO();
+        private Thread extractThread;
 
         public ExtractForm()
         {
@@ -48,18 +49,18 @@ namespace Extract
                 string source_path = Directory.GetCurrentDirectory();
                 string dest_path = folderDlg.SelectedPath + "\\";
                 string pwd = textBox.Text;
-
                 long result = -1;
-                var thread = new Thread(() => result = extractISO.ExtractDirectory(source_path, dest_path, pwd));
-                thread.Start();
-                while (thread.IsAlive)
+                extractThread = new Thread(() => result = extractISO.ExtractDirectory(source_path, dest_path, pwd));
+                extractThread.Start();
+                while (extractThread.IsAlive)
                 {
                     if (extractISO.Progress <= progressBar.Maximum)
                     {
                         updateProgressBar(extractISO.Progress);
                     }
+                    Application.DoEvents();
                 }
-                thread = null;
+                extractThread = null;
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
                 if (result < 1)
@@ -99,7 +100,6 @@ namespace Extract
             progressBar.Value = value;
             progressBar.Invalidate();
             this.Refresh();
-            Application.DoEvents();
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -114,6 +114,11 @@ namespace Extract
         private void label2_MouseLeave(object sender, EventArgs e)
         {
             textBox.PasswordChar = '●';
+        }
+
+        private void ExtractForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            extractThread = null;
         }
     }
 }

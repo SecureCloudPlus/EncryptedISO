@@ -116,6 +116,7 @@ namespace Extract
             this.Name = "ExtractForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Extract Files";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExtractForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

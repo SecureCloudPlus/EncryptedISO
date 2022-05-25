@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Extract.exe" size="227840">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Extract.exe" size="228352">
       <assemblyIdentity name="Extract" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>wiKGi6h8z6puOsN8/X8Y9jGuvlcX1Lp8pyJa6mAr/nI=</dsig:DigestValue>
+        <dsig:DigestValue>KmgFCw8UMJuUYZFzeSYIhzNhKSjmoIYsX35ljCsQDxE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
