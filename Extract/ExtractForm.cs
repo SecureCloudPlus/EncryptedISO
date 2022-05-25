@@ -17,6 +17,7 @@ namespace Extract
             InitializeComponent();
             progressBar.Value = 0;
             progressBar.Minimum = 0;
+            updateStatusLabel("Ready...");
         }
 
 
@@ -24,7 +25,7 @@ namespace Extract
         {
             if (textBox.TextLength == 0)
             {
-                statusLabel.Text = "An ERROR occured extracting the files.";
+                updateStatusLabel( "An ERROR occured extracting the files.");
                 return;
 
             }
@@ -36,47 +37,38 @@ namespace Extract
             DialogResult dlgRes = folderDlg.ShowDialog();
             if (dlgRes == DialogResult.OK)
             {
-
-
                 DirectoryInfo dinfo = new DirectoryInfo(Directory.GetCurrentDirectory());
-                progressBar.Maximum = dinfo.GetFiles(@"*.enc").Length + 1;
-                statusLabel.Text = "Working... please wait";
-                this.Refresh();
+                int max = 0;
+                foreach (FileInfo fi in dinfo.GetFiles(@"*.enc"))
+                {
+                    max += (int)(fi.Length / 4096);
+                }
+                progressBar.Maximum = max;
+                updateStatusLabel("Working... please wait");
                 string source_path = Directory.GetCurrentDirectory();
                 string dest_path = folderDlg.SelectedPath + "\\";
                 string pwd = textBox.Text;
 
-                int result = -1;
+                long result = -1;
                 var thread = new Thread(() => result = extractISO.ExtractDirectory(source_path, dest_path, pwd));
                 thread.Start();
-                int cnt = -1;
                 while (thread.IsAlive)
                 {
-                    if (extractISO.Progress > cnt)
+                    if (extractISO.Progress <= progressBar.Maximum)
                     {
-                        cnt = extractISO.Progress;
-                        if (cnt <= progressBar.Maximum)
-                            updateProgressBar(cnt);
+                        updateProgressBar(extractISO.Progress);
                     }
-                    Application.DoEvents();
                 }
                 thread = null;
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
-                result--;
-                if (result == -1)
+                if (result < 1)
                 {
-                    statusLabel.Text = "An ERROR occured extracting the files.";
+                    updateStatusLabel("Please ensure your password is correct.");
                     updateProgressBar(0);
                     return;
                 }
-                else if (result == 0)
-                {
-                    statusLabel.Text = "Please ensure your password is correct.";
-                    updateProgressBar(0);
-                    return;
-                }
-                statusLabel.Text = "Successfully extracted " + result + " files.";
+                updateStatusLabel("Successfully extracted " + result + " files.");
                 updateProgressBar(progressBar.Maximum);
                 ProcessStartInfo startInfo = new ProcessStartInfo
                 {
@@ -95,11 +87,19 @@ namespace Extract
             }
         }
 
+        private void updateStatusLabel(string message)
+        {
+            statusLabel.Text = message;
+            statusLabel.Invalidate();
+            this.Refresh();
+        }
+
         private void updateProgressBar(int value)
         {
             progressBar.Value = value;
             progressBar.Invalidate();
             this.Refresh();
+            Application.DoEvents();
         }
 
         private void label2_Click(object sender, EventArgs e)

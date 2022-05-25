@@ -2,11 +2,12 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 class ExtractISO
 {
-    private int progress = -1;
+    private int progress = 0;
     public int Progress
     {
         get
@@ -28,32 +29,30 @@ class ExtractISO
         try
         {
             DirectoryInfo dinfo = new DirectoryInfo(sourceFolder);
+            int cnt = 0;
             foreach (FileInfo inFile in dinfo.GetFiles(@"*.enc"))
             {
                 using (FileStream inFs = inFile.OpenRead())
                 {
                     string encFileName = Path.ChangeExtension(inFile.Name, null);
                     string fileName = DecipherString(encFileName, password);
-                    bool success = false;
+                    //bool success = false;
                     using (FileStream outFs = File.Create(targetFolder + "\\" + fileName))
                     {
-                        if (DecryptStream(inFs, outFs, password))
+                        if (!DecryptStream(inFs, outFs, password))
                         {
-                            inFs.CopyTo(outFs);
-                            progress++;
-                            success = true;
+                            File.Delete(targetFolder + "\\" + fileName);
+                            return 0;
                         }
+                        cnt++;
                     }
-                    if (!success)
-                        File.Delete(targetFolder + "\\" + fileName);
                 }
             }
-            return progress;
+            return cnt;
         }
         catch (Exception e)
         {
-            progress = -1;
-            return progress;
+            return -1;
         }
     }
 
@@ -119,9 +118,13 @@ class ExtractISO
         {
             byte[] saltBytes;
             if (salt == null)
+            {
                 saltBytes = new SHA256Managed().ComputeHash(Encoding.Unicode.GetBytes(password));
+            }
             else
+            {
                 saltBytes = Encoding.Unicode.GetBytes(salt);
+            }
             using (Aes encryption = Aes.Create())
             {
                 encryption.BlockSize = 128;
@@ -132,15 +135,24 @@ class ExtractISO
                 encryption.Mode = CipherMode.CBC;
                 ICryptoTransform encryptor = encryption.CreateDecryptor();
                 inStream.Position = 0;
-                CryptoStream encryptStream = new CryptoStream(inStream, encryptor, CryptoStreamMode.Read);
-                encryptStream.CopyTo(OutStream);
+                using(CryptoStream decryptStream = new CryptoStream(inStream, encryptor, CryptoStreamMode.Read))
+                {
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    do
+                    {
+                        bytesRead = decryptStream.Read(buffer, 0, buffer.Length);
+                        OutStream.Write(buffer, 0, bytesRead);
+                        progress++;
+                    }
+                    while (bytesRead != 0);
+                }
                 OutStream.Position = 0;
             }
             return true;
         }
         catch (Exception e)
         {
-            MessageBox.Show(e.Message);
             return false;
         }
     }
