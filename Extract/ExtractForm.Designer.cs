@@ -36,6 +36,7 @@ namespace Extract
             this.label2 = new System.Windows.Forms.Label();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.statusLabel = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -55,11 +56,13 @@ namespace Extract
             this.textBox.PasswordChar = '●';
             this.textBox.Size = new System.Drawing.Size(232, 23);
             this.textBox.TabIndex = 1;
+            this.textBox.TextChanged += new System.EventHandler(this.textBox_TextChanged);
             this.textBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox_KeyDown);
             // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.Transparent;
+            this.button1.Enabled = false;
             this.button1.Location = new System.Drawing.Point(74, 59);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(107, 23);
@@ -71,7 +74,7 @@ namespace Extract
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(161, 11);
+            this.label2.Location = new System.Drawing.Point(160, 11);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(83, 13);
             this.label2.TabIndex = 4;
@@ -97,11 +100,23 @@ namespace Extract
             this.statusLabel.TabIndex = 6;
             this.statusLabel.Text = "label3";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(212, 53);
+            this.label3.Name = "label3";
+            this.label3.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label3.Size = new System.Drawing.Size(31, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Clear";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
             // ExtractForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(255, 116);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.statusLabel);
             this.Controls.Add(this.label2);
@@ -130,6 +145,7 @@ namespace Extract
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label statusLabel;
+        private System.Windows.Forms.Label label3;
     }
 }
 

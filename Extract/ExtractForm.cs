@@ -120,5 +120,17 @@ namespace Extract
         {
             extractThread = null;
         }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            textBox.Clear();
+        }
+
+        private void textBox_TextChanged(object sender, EventArgs e)
+        {
+            button1.Enabled = false;
+            if (textBox.TextLength > 0)
+                button1.Enabled = true;
+        }
     }
 }
