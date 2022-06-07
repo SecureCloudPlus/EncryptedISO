@@ -98,7 +98,6 @@ namespace Extract
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(255, 17);
             this.statusLabel.TabIndex = 6;
-            this.statusLabel.Text = "label3";
             // 
             // label3
             // 
