@@ -26,7 +26,6 @@ namespace Extract
             {
                 updateStatusLabel( "An ERROR occured extracting the files.");
                 return;
-
             }
             FolderBrowserDialog folderDlg = new FolderBrowserDialog
             {
