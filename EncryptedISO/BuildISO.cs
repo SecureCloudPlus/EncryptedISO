@@ -82,7 +82,7 @@ internal class BuildISO
     /// <summary>
     /// Takes a HEX string and returns a string value based on HEX input string but replaces the numbers with characters from A-Z
     /// </summary>
-    /// <param name="tmpKey"></param> 
+    /// <param name="tmpKey"></param>
     /// <returns></returns>
     private static string IncreaseVigenereCipherKeyEntropy(string tmpKey)
     {
@@ -159,7 +159,7 @@ internal class BuildISO
     }
 
     /// <summary>
-    /// Encrypts the input data stream to the output data stream using AES 256CBC 
+    /// Encrypts the input data stream to the output data stream using AES 256CBC
     /// </summary>
     /// <param name="inStream"></param>
     /// <param name="OutStream"></param>

@@ -1,11 +1,10 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace EncryptedISO
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             string[] filesToBeEncrypted = new string[] { @"D:\ParadoxSE.iso", @"D:\test\TheGlobeReciept - Copy.pdf", @"D:\test\Bulldog Commission Guide 500084v2_2.pdf" };
             string[] filesNOTToBeEncrypted = new string[] { @"D:\test\Extract.exe" };
