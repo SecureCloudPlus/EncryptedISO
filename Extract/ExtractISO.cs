@@ -2,8 +2,6 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading;
-using System.Windows.Forms;
 
 class ExtractISO
 {
@@ -65,10 +63,12 @@ class ExtractISO
     /// <returns></returns>
     public string DecipherString(string cipherText, string passPhrase)
     {
-        SHA512 sha512Hash = SHA512.Create();
-        byte[] keySourceHash = sha512Hash.ComputeHash(ASCIIEncoding.ASCII.GetBytes(passPhrase));
-        string cipherKey = IncreaseVigenereCipherKeyEntropy(BitConverter.ToString(keySourceHash).Replace("-", ""));
-        return VigenereCipher(cipherText, cipherKey, false);
+        using (var sha512Cng = new SHA512Cng())
+        {
+            byte[] keySourceHash = sha512Cng.ComputeHash(ASCIIEncoding.ASCII.GetBytes(passPhrase));
+            string cipherKey = IncreaseVigenereCipherKeyEntropy(BitConverter.ToString(keySourceHash).Replace("-", ""));
+            return VigenereCipher(cipherText, cipherKey, false);
+        }
     }
 
     /// <summary>
@@ -98,7 +98,7 @@ class ExtractISO
             }
             return outKey.ToString();
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
         }
         return null;
@@ -117,25 +117,34 @@ class ExtractISO
         try
         {
             byte[] saltBytes;
+
             if (salt == null)
             {
-                saltBytes = new SHA256Managed().ComputeHash(Encoding.Unicode.GetBytes(password));
+                using (var sha256Cng = new SHA256Cng())
+                {
+                    saltBytes = sha256Cng.ComputeHash(Encoding.Unicode.GetBytes(password));
+                }
             }
             else
             {
                 saltBytes = Encoding.Unicode.GetBytes(salt);
             }
-            using (Aes encryption = Aes.Create())
+
+            using(var aesCng = new AesCng())
             {
-                encryption.BlockSize = 128;
                 Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(password, saltBytes);
-                encryption.Key = key.GetBytes(encryption.KeySize / 8);
-                encryption.IV = key.GetBytes(encryption.BlockSize / 8);
-                encryption.Padding = PaddingMode.PKCS7;
-                encryption.Mode = CipherMode.CBC;
-                ICryptoTransform encryptor = encryption.CreateDecryptor();
+
+                aesCng.BlockSize = 128;
+                aesCng.Key = key.GetBytes(aesCng.KeySize / 8);
+                aesCng.IV = key.GetBytes(aesCng.BlockSize / 8);
+                aesCng.Padding = PaddingMode.PKCS7;
+                aesCng.Mode = CipherMode.CBC;
+
                 inStream.Position = 0;
-                using(CryptoStream decryptStream = new CryptoStream(inStream, encryptor, CryptoStreamMode.Read))
+
+                ICryptoTransform decryptor = aesCng.CreateDecryptor();
+
+                using (CryptoStream decryptStream = new CryptoStream(inStream, decryptor, CryptoStreamMode.Read))
                 {
                     byte[] buffer = new byte[4096];
                     int bytesRead;
@@ -146,12 +155,15 @@ class ExtractISO
                         progress++;
                     }
                     while (bytesRead != 0);
+
                 }
+
                 OutStream.Position = 0;
             }
+
             return true;
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
             return false;
         }
